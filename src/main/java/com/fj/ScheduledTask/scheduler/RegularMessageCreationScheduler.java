@@ -14,11 +14,11 @@ import java.util.Date;
 
 @Component
 public class RegularMessageCreationScheduler {
-
+	
 	@Autowired
 	private MessageService messageService;
 		
-    @Scheduled(fixedDelay = 10000) // every 10 secs
+    @Scheduled(fixedDelay = 10000)
     public void scheduleFixedDelayTask() {
  	
         System.out.println("Fixed delay task - " + System.currentTimeMillis() / 1000);
@@ -26,30 +26,15 @@ public class RegularMessageCreationScheduler {
         int numberOfExisingMessages = messageService.retrieveAllMessages().size();
         System.out.println("### Number of messages in GCP DataStore: " + numberOfExisingMessages);
         
-        MessageModel messageToBeCreated = new MessageModel();
-        
         if (numberOfExisingMessages < 5) {
-        	
-        	int numberOfCreationRuns = 0;
-        	
-           	do { 		
-            	numberOfCreationRuns++;
+            MessageModel messageToBeCreated = new MessageModel();
             	
-            	messageToBeCreated.setMessage("AutomatedRun # " + numberOfCreationRuns + " - " + new Timestamp(System.currentTimeMillis()));
-            	messageService.addSingleMessage(messageToBeCreated, true);
-            	System.out.println("   ### Add new Message to GCP DataStore: " + numberOfCreationRuns);
+            messageToBeCreated.setMessage("AutomatedRun # " + new Timestamp(System.currentTimeMillis()));
+            messageService.addSingleMessage(messageToBeCreated, true);
+            System.out.println("   ### Adding new Message to GCP DataStore");
             
-        	}
-        	while (messageService.retrieveAllMessages().size() < 5);	
-        	
-        	System.out.println("### Total number of Messages created: " + numberOfCreationRuns);
-        	
-           	numberOfCreationRuns = 0;
-           	
         }
-        
-        
-    }
+    }    
     
     
 }

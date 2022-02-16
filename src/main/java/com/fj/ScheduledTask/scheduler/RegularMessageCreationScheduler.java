@@ -18,7 +18,7 @@ public class RegularMessageCreationScheduler {
 	@Autowired
 	private MessageService messageService;
 		
-    @Scheduled(fixedDelay = 10000)
+    @Scheduled(fixedDelay = 20000)
     public void scheduleFixedDelayTask() {
  	
         System.out.println("Fixed delay task - " + System.currentTimeMillis() / 1000);
